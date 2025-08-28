@@ -1,5 +1,5 @@
-import { env } from "@/config/env";
 import mongoose from "mongoose";
+import { env } from "~/config/env";
 
 export async function connection() {
   try {
