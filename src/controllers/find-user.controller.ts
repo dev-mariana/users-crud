@@ -7,11 +7,11 @@ export async function findUserController(
   request: Request,
   response: Response
 ): Promise<Response> {
-  const createUserBodyParam = z.object({
+  const findUserBodyParam = z.object({
     id: z.string(),
   });
 
-  const { id } = createUserBodyParam.parse(request.params);
+  const { id } = findUserBodyParam.parse(request.params);
 
   try {
     const usersRepository = new UsersRepository();
