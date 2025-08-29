@@ -18,4 +18,12 @@ export class UsersRepository implements IUsersRepository {
   async findAll(): Promise<User[]> {
     return await UserModel.find();
   }
+
+  async findById(id: string): Promise<User | null> {
+    const user = await UserModel.findById(id);
+
+    if (!user) return null;
+
+    return user;
+  }
 }
