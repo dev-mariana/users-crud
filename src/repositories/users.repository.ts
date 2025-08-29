@@ -8,8 +8,6 @@ export class UsersRepository implements IUsersRepository {
       name: user.name,
       email: user.email,
       password: user.password,
-      created_at: user.created_at,
-      updated_at: user.updated_at ?? null,
     });
 
     return created_user;

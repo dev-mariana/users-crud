@@ -13,7 +13,7 @@ export class FetchUsersService {
       email: user.email,
       password: user.password,
       created_at: user.created_at,
-      updated_at: user.updated_at ?? new Date(),
+      updated_at: user.updated_at ?? null,
     }));
   }
 }

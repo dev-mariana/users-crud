@@ -12,7 +12,6 @@ export class CreateUserService {
       name: createUserDto.name,
       email: createUserDto.email,
       password: createUserDto.password,
-      created_at: new Date(),
     });
 
     return {
@@ -21,6 +20,7 @@ export class CreateUserService {
       email: user.email,
       password: user.password,
       created_at: user.created_at,
+      updated_at: user.updated_at ?? null,
     };
   }
 }
