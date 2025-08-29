@@ -24,4 +24,21 @@ export class UsersRepository implements IUsersRepository {
 
     return user;
   }
+
+  async update(id: string, user: Partial<User>): Promise<User | null> {
+    const updated_user = await UserModel.findOneAndUpdate(
+      { _id: id },
+      {
+        name: user.name,
+        email: user.email,
+        password: user.password,
+        updated_at: Date.now(),
+      },
+      {
+        new: true,
+      }
+    );
+
+    return updated_user;
+  }
 }
