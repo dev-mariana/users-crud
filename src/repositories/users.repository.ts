@@ -25,7 +25,7 @@ export class UsersRepository implements IUsersRepository {
     return user;
   }
 
-  async update(id: string, user: Partial<User>): Promise<User | null> {
+  async update(id: string, user: Partial<User>): Promise<User> {
     const updated_user = await UserModel.findOneAndUpdate(
       { _id: id },
       {
@@ -38,6 +38,10 @@ export class UsersRepository implements IUsersRepository {
         new: true,
       }
     );
+
+    if (!updated_user) {
+      throw new Error("Failed to update user.");
+    }
 
     return updated_user;
   }

@@ -11,19 +11,21 @@ export class UpdateUserService {
     id: string,
     dto: UpdateUserRequest
   ): Promise<UpdateUserResponse> {
-    const user = await this.usersRepository.update(id, dto);
+    const user = await this.usersRepository.findById(id);
 
     if (!user) {
       throw new Error("User not found.");
     }
 
+    const updated_user = await this.usersRepository.update(id, dto);
+
     return {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      password: user.password,
-      created_at: user.created_at,
-      updated_at: user.updated_at ?? new Date(),
+      id: updated_user.id,
+      name: updated_user.name,
+      email: updated_user.email,
+      password: updated_user.password,
+      created_at: updated_user.created_at,
+      updated_at: updated_user.updated_at ?? new Date(),
     };
   }
 }
