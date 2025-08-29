@@ -5,7 +5,7 @@ import type {
 import type { UsersRepository } from "~/repositories/users.repository";
 
 export class CreateUserService {
-  constructor(private readonly usersRepository: UsersRepository) {}
+  constructor(private usersRepository: UsersRepository) {}
 
   async execute(createUserDto: CreateUserRequest): Promise<CreateUserResponse> {
     const user = await this.usersRepository.create({
