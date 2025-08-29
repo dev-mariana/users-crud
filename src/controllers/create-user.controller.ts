@@ -19,8 +19,7 @@ export async function createUserController(
     const usersRepository = new UsersRepository();
     const createUserService = new CreateUserService(usersRepository);
 
-    const createUserDto = { name, email, password };
-    const user = await createUserService.execute(createUserDto);
+    const user = await createUserService.execute({ name, email, password });
 
     return response.status(201).json(user);
   } catch (error) {
