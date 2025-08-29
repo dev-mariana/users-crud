@@ -28,7 +28,7 @@ export async function updateUserController(
 
     return response.status(200).json(user);
   } catch (error) {
-    console.error("Error creating user:", error);
+    console.error("Error updating user:", error);
 
     return response.status(500).json({
       error: "Internal server error",

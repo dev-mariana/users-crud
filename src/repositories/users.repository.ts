@@ -45,4 +45,8 @@ export class UsersRepository implements IUsersRepository {
 
     return updated_user;
   }
+
+  async delete(id: string): Promise<void> {
+    await UserModel.deleteOne({ _id: id });
+  }
 }
