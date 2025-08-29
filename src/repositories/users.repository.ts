@@ -14,4 +14,8 @@ export class UsersRepository implements IUsersRepository {
 
     return created_user;
   }
+
+  async findAll(): Promise<User[]> {
+    return await UserModel.find();
+  }
 }
