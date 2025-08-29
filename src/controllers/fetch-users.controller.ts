@@ -8,13 +8,13 @@ export async function fetchUsersController(
 ): Promise<Response> {
   try {
     const usersRepository = new UsersRepository();
-    const createUserService = new FetchUsersService(usersRepository);
+    const fetchUsersService = new FetchUsersService(usersRepository);
 
-    const user = await createUserService.execute();
+    const user = await fetchUsersService.execute();
 
-    return response.status(201).json(user);
+    return response.status(200).json(user);
   } catch (error) {
-    console.error("Error creating user:", error);
+    console.error("Error fetching user:", error);
 
     return response.status(500).json({
       error: "Internal server error",
