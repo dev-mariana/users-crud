@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 import type {
   CreateUserRequest,
   CreateUserResponse,
@@ -8,10 +9,12 @@ export class CreateUserService {
   constructor(private usersRepository: UsersRepository) {}
 
   async execute(createUserDto: CreateUserRequest): Promise<CreateUserResponse> {
+    const encryptedPassword = await bcrypt.hash(createUserDto.password, 6);
+
     const user = await this.usersRepository.create({
       name: createUserDto.name,
       email: createUserDto.email,
-      password: createUserDto.password,
+      password: encryptedPassword,
     });
 
     return {

@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 import type {
   UpdateUserRequest,
   UpdateUserResponse,
@@ -9,7 +10,7 @@ export class UpdateUserService {
 
   async execute(
     id: string,
-    dto: UpdateUserRequest
+    updateUserDto: UpdateUserRequest
   ): Promise<UpdateUserResponse> {
     const user = await this.usersRepository.findById(id);
 
@@ -17,7 +18,13 @@ export class UpdateUserService {
       throw new Error("User not found.");
     }
 
-    const updated_user = await this.usersRepository.update(id, dto);
+    const encryptedPassword = await bcrypt.hash(updateUserDto.password, 6);
+
+    const updated_user = await this.usersRepository.update(id, {
+      name: updateUserDto.name,
+      email: updateUserDto.email,
+      password: encryptedPassword,
+    });
 
     return {
       id: updated_user.id,
