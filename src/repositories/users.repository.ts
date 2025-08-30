@@ -1,5 +1,6 @@
 import { UserModel } from "~/config/database/mongo/schema/users";
 import type { User } from "~/entities/user";
+import { ErrorHandler } from "~/errors/error-handler";
 import type { IUsersRepository } from "./users.interface";
 
 export class UsersRepository implements IUsersRepository {
@@ -40,7 +41,7 @@ export class UsersRepository implements IUsersRepository {
     );
 
     if (!updated_user) {
-      throw new Error("Failed to update user.");
+      throw new ErrorHandler(500, "Failed to update user.");
     }
 
     return updated_user;

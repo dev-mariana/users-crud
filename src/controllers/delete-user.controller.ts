@@ -1,12 +1,13 @@
-import type { Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import z from "zod";
 import { UsersRepository } from "~/repositories/users.repository";
 import { DeleteUserService } from "~/services/delete-user.service";
 
 export async function deleteUserController(
   request: Request,
-  response: Response
-): Promise<Response> {
+  response: Response,
+  next: NextFunction
+): Promise<void> {
   const deleteUserBodyParam = z.object({
     id: z.string(),
   });
@@ -17,14 +18,10 @@ export async function deleteUserController(
     const usersRepository = new UsersRepository();
     const deleteUserService = new DeleteUserService(usersRepository);
 
-    const user = await deleteUserService.execute(id);
+    await deleteUserService.execute(id);
 
-    return response.status(204).json(user);
+    response.status(204).send();
   } catch (error) {
-    console.error("Error deleting user:", error);
-
-    return response.status(500).json({
-      error: "Internal server error",
-    });
+    next(error);
   }
 }

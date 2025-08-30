@@ -3,6 +3,7 @@ import type {
   UpdateUserRequest,
   UpdateUserResponse,
 } from "~/dtos/update-user.dto";
+import { ErrorHandler } from "~/errors/error-handler";
 import type { UsersRepository } from "~/repositories/users.repository";
 
 export class UpdateUserService {
@@ -15,7 +16,7 @@ export class UpdateUserService {
     const user = await this.usersRepository.findById(id);
 
     if (!user) {
-      throw new Error("User not found.");
+      throw new ErrorHandler(404, "User not found.");
     }
 
     const encryptedPassword = await bcrypt.hash(updateUserDto.password, 6);
