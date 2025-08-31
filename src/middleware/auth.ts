@@ -17,7 +17,9 @@ export const authMiddleware = (
     const token = request.header("Authorization")?.replace("Bearer ", "");
 
     if (!token) {
-      return response.status(401).json({ message: "No token provided" });
+      return response
+        .status(401)
+        .json({ message: "Unauthorized, no token was provided." });
     }
 
     const decoded = jwt.verify(token, SECRET_KEY);
@@ -26,6 +28,6 @@ export const authMiddleware = (
     next();
   } catch (error) {
     next(error);
-    response.status(401).json({ message: "Invalid or expired token" });
+    response.status(401).json({ message: "Invalid or expired token." });
   }
 };
