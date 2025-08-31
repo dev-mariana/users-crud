@@ -50,4 +50,8 @@ export class UsersRepository implements IUsersRepository {
   async delete(id: string): Promise<void> {
     await UserModel.deleteOne({ _id: id });
   }
+
+  async findByEmail(email: string): Promise<User | null> {
+    return await UserModel.findOne({ email });
+  }
 }
