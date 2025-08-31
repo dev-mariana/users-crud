@@ -8,13 +8,13 @@ export async function findUserController(
   response: Response,
   next: NextFunction
 ): Promise<void> {
-  const findUserBodyParam = z.object({
-    id: z.string(),
-  });
-
-  const { id } = findUserBodyParam.parse(request.params);
-
   try {
+    const findUserBodyParam = z.object({
+      id: z.string(),
+    });
+
+    const { id } = findUserBodyParam.parse(request.params);
+
     const usersRepository = new UsersRepository();
     const findUserService = new FindUserService(usersRepository);
 

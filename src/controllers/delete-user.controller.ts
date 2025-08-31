@@ -8,13 +8,13 @@ export async function deleteUserController(
   response: Response,
   next: NextFunction
 ): Promise<void> {
-  const deleteUserBodyParam = z.object({
-    id: z.string(),
-  });
-
-  const { id } = deleteUserBodyParam.parse(request.params);
-
   try {
+    const deleteUserBodyParam = z.object({
+      id: z.string(),
+    });
+
+    const { id } = deleteUserBodyParam.parse(request.params);
+
     const usersRepository = new UsersRepository();
     const deleteUserService = new DeleteUserService(usersRepository);
 

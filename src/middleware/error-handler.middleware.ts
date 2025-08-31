@@ -1,5 +1,7 @@
 import type { NextFunction, Request, Response } from "express";
+import { ZodError } from "zod";
 import { ErrorHandler } from "~/errors/error-handler";
+import { formatZodErrorMessage } from "~/helpers/format-zod-error";
 
 export function errorHandlerMiddleware(
   error: Error,
@@ -23,11 +25,17 @@ export function errorHandlerMiddleware(
     });
   }
 
-  if (error.name === "ZodError") {
+  if (error instanceof ZodError) {
+    const formattedErrors = (error as any).errors.map((err: any) => ({
+      field: err.path.join("."),
+      message: formatZodErrorMessage(err),
+      code: err.code,
+    }));
+
     return response.status(400).json({
-      error: "Validation error",
-      details: error.message,
+      error: "Validation failed",
       statusCode: 400,
+      details: formattedErrors,
       timestamp: new Date().toISOString(),
     });
   }
@@ -43,8 +51,8 @@ export function errorHandlerMiddleware(
 
   if (error.name === "CastError") {
     return response.status(400).json({
-      error: "Invalid Id format",
-      message: "The provided Id is not in the correct format",
+      error: "Invalid ID format",
+      message: "The provided ID is not in the correct format",
       statusCode: 400,
       timestamp: new Date().toISOString(),
     });
