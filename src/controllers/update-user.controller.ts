@@ -13,19 +13,24 @@ export async function updateUserController(
       id: z.string(),
     });
 
-    const updateUserBodySchema = z.object({
-      name: z.string(),
-      email: z.string().email(),
-      password: z.string().min(6),
-    });
+    const updateUserBodySchema = z
+      .object({
+        name: z.string().optional(),
+        email: z.string().email().optional(),
+        password: z.string().min(6).optional(),
+      })
+      .refine(
+        (data) => Object.values(data).some((value) => value !== undefined),
+        "At least one field must be provided for update"
+      );
 
     const { id } = updateUserBodyParam.parse(request.params);
-    const { name, email, password } = updateUserBodySchema.parse(request.body);
+    const updateData = updateUserBodySchema.parse(request.body);
 
     const usersRepository = new UsersRepository();
     const updateUserService = new UpdateUserService(usersRepository);
 
-    const user = await updateUserService.execute(id, { name, email, password });
+    const user = await updateUserService.execute(id, updateData);
 
     response.status(200).json(user);
   } catch (error) {

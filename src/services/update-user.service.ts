@@ -3,6 +3,7 @@ import type {
   UpdateUserRequest,
   UpdateUserResponse,
 } from "~/dtos/update-user.dto";
+import type { User } from "~/entities/user";
 import { ErrorHandler } from "~/errors/error-handler";
 import type { UsersRepository } from "~/repositories/users.repository";
 
@@ -11,7 +12,7 @@ export class UpdateUserService {
 
   async execute(
     id: string,
-    updateUserDto: UpdateUserRequest
+    updateUserDto: Partial<UpdateUserRequest>
   ): Promise<UpdateUserResponse> {
     const user = await this.usersRepository.findById(id);
 
@@ -19,13 +20,19 @@ export class UpdateUserService {
       throw new ErrorHandler(404, "User not found.");
     }
 
-    const encryptedPassword = await bcrypt.hash(updateUserDto.password, 6);
+    const updateFields: Partial<User> = {};
 
-    const updated_user = await this.usersRepository.update(id, {
-      name: updateUserDto.name,
-      email: updateUserDto.email,
-      password: encryptedPassword,
-    });
+    if (updateUserDto.name !== undefined)
+      updateFields.name = updateUserDto.name;
+
+    if (updateUserDto.email !== undefined)
+      updateFields.email = updateUserDto.email;
+
+    if (updateUserDto.password !== undefined) {
+      updateFields.password = await bcrypt.hash(updateUserDto.password, 6);
+    }
+
+    const updated_user = await this.usersRepository.update(id, updateFields);
 
     return {
       id: updated_user.id,
