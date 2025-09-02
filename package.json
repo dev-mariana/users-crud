@@ -4,8 +4,9 @@
   "description": "A CRUD application for managing users",
   "main": "dist/index.js",
   "scripts": {
-    "start": "tsx src/server.ts",
     "dev": "tsx watch src/server.ts",
+    "start": "node dist/server.js",
+    "build": "tsx src/server.ts",
     "lint": "biome lint"
   },
   "keywords": [
